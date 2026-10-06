@@ -1,89 +1,114 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Moon, Sun } from 'lucide-react';
+
+const menuItems = [
+  { name: 'Home', href: '/#home' },
+  { name: 'Skills', href: '/#skills' },
+  { name: 'Projects', href: '/#projects' },
+  { name: 'Experience', href: '/#experience' },
+  { name: 'Contact', href: '/#contact' },
+];
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
+    const saved = window.localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initial = saved === 'dark' || (!saved && prefersDark) ? 'dark' : 'light';
+    setTheme(initial);
+    document.documentElement.dataset.theme = initial;
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isOpen]);
 
-  const menuItems = [
-    { name: 'Home', href: '/#home' },
-    { name: 'Skills', href: '/#skills' },
-    { name: 'Projects', href: '/#projects' },
-    { name: 'Experience', href: '/#experience' }
-  ];
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    document.documentElement.dataset.theme = next;
+    window.localStorage.setItem('theme', next);
+  };
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full p-6 md:p-8 z-[60] flex justify-end items-center pointer-events-none mix-blend-difference">
-        <button 
-          onClick={() => setIsOpen(!isOpen)}
-          className="pointer-events-auto relative z-[60] w-12 h-12 flex flex-col justify-center items-end gap-2 link focus:outline-none group"
-          aria-label="Toggle menu"
+      <nav className="fixed left-0 top-0 z-[60] flex w-full items-center justify-between px-4 py-4 mix-blend-normal sm:px-6 lg:px-10">
+        <a
+          href="/#home"
+          className="pointer-events-auto border border-[var(--line)] bg-[var(--paper)] px-3 py-2 font-mono text-xs font-black uppercase tracking-[0.2em] text-[var(--ink)] shadow-[4px_4px_0_var(--shadow)] transition-transform hover:-translate-y-0.5"
         >
-          <motion.div 
-            animate={{ 
-              rotate: isOpen ? -45 : 0, 
-              y: isOpen ? 10 : 0,
-              width: isOpen ? 32 : 32
-            }}
-            transition={{ duration: 0.3 }}
-            className="h-[2px] bg-white origin-center"
-            style={{ width: '32px' }}
-          />
-          <motion.div 
-            animate={{ opacity: isOpen ? 0 : 1 }}
-            transition={{ duration: 0.3 }}
-            className="w-8 h-[2px] bg-white"
-          />
-          <motion.div 
-            animate={{ 
-              rotate: isOpen ? 45 : 0, 
-              y: isOpen ? -10 : 0,
-              width: isOpen ? 32 : 24
-            }}
-            transition={{ duration: 0.3 }}
-            className="h-[2px] bg-white origin-center group-hover:w-8 transition-all"
-            style={{ width: isOpen ? '32px' : '24px' }}
-          />
-        </button>
+          V / P
+        </a>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={toggleTheme}
+            className="flex h-11 w-11 items-center justify-center border border-[var(--line)] bg-[var(--paper)] text-[var(--ink)] shadow-[4px_4px_0_var(--shadow)] transition-transform hover:-translate-y-0.5"
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </button>
+          <button
+            onClick={() => setIsOpen((value) => !value)}
+            className="relative z-[60] flex h-11 w-14 flex-col items-center justify-center gap-1.5 border border-[var(--line)] bg-[var(--paper)] text-[var(--ink)] shadow-[4px_4px_0_var(--shadow)] transition-transform hover:-translate-y-0.5"
+            aria-label="Toggle menu"
+            aria-expanded={isOpen}
+          >
+            <motion.span
+              animate={{ rotate: isOpen ? 45 : 0, y: isOpen ? 4 : 0 }}
+              className="h-0.5 w-7 bg-current"
+            />
+            <motion.span animate={{ opacity: isOpen ? 0 : 1 }} className="h-0.5 w-7 bg-current" />
+            <motion.span
+              animate={{ rotate: isOpen ? -45 : 0, y: isOpen ? -4 : 0 }}
+              className="h-0.5 w-7 bg-current"
+            />
+          </button>
+        </div>
       </nav>
 
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ clipPath: "circle(0% at 100% 0%)" }}
-            animate={{ clipPath: "circle(150% at 100% 0%)" }}
-            exit={{ clipPath: "circle(0% at 100% 0%)" }}
-            transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-[55] bg-black/90 flex flex-col items-center justify-center pointer-events-auto"
+            initial={{ y: '-100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '-100%' }}
+            transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
+            className="fixed inset-0 z-[55] flex flex-col justify-between bg-[var(--paper)] p-6 text-[var(--ink)] sm:p-10"
           >
-            <ul className="flex flex-col gap-8 text-center">
-              {menuItems.map((item, i) => (
-                <motion.li 
-                  key={item.name}
-                  initial={{ y: 50, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: 50, opacity: 0 }}
-                  transition={{ delay: 0.1 * i, duration: 0.5, ease: "easeOut" }}
-                >
-                  <a 
-                    href={item.href} 
-                    onClick={() => setIsOpen(false)}
-                    className="text-5xl font-mono font-bold text-white hover:text-purple-400 transition-all duration-300 link block"
+            <div className="pt-20">
+              <p className="font-mono text-xs font-bold uppercase tracking-[0.28em] text-[var(--muted)]">Navigate</p>
+              <ul className="mt-8 divide-y divide-[var(--line)] border-y border-[var(--line)]">
+                {menuItems.map((item, index) => (
+                  <motion.li
+                    key={item.name}
+                    initial={{ opacity: 0, x: -24 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.08 * index, duration: 0.35 }}
                   >
-                    {item.name}
-                  </a>
-                </motion.li>
-              ))}
-            </ul>
+                    <a
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className="group flex items-center justify-between py-5 text-5xl font-black uppercase leading-none transition-colors hover:text-[var(--accent)] sm:text-7xl"
+                    >
+                      {item.name}
+                      <span className="font-mono text-sm text-[var(--muted)] transition-transform group-hover:translate-x-2">0{index + 1}</span>
+                    </a>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+            <div className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">
+              vishuvishmitha84@gmail.com
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

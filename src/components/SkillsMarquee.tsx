@@ -57,10 +57,10 @@ const techIcons: Record<string, { svg: React.ReactNode; color: string }> = {
 export function SkillsMarquee() {
   const skillNames = Object.keys(techIcons);
   const row1 = [...skillNames, ...skillNames];
-  const row2 = [...skillNames.reverse(), ...skillNames];
+  const row2 = [...skillNames].reverse().concat(skillNames);
 
   return (
-    <section id="skills" className="py-20 overflow-hidden bg-white relative">
+    <section id="skills" className="py-20 overflow-hidden bg-[var(--paper)] relative border-b border-[var(--line)]">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -68,8 +68,8 @@ export function SkillsMarquee() {
         transition={{ duration: 0.5 }}
         className="text-center mb-14 px-6"
       >
-        <h2 className="text-4xl md:text-5xl font-black text-neutral-900 tracking-tight mb-4">Tech Stack</h2>
-        <p className="text-neutral-500 text-lg max-w-xl mx-auto">Technologies I use daily to build production systems.</p>
+        <h2 className="text-4xl md:text-6xl font-black text-[var(--ink)] uppercase tracking-normal mb-4">Tech Stack</h2>
+        <p className="text-[var(--muted-strong)] text-lg max-w-xl mx-auto">Technologies I use daily to build production systems.</p>
       </motion.div>
 
       <div className="relative mb-5">
@@ -77,9 +77,9 @@ export function SkillsMarquee() {
           {row1.map((name, idx) => {
             const tech = techIcons[name];
             return (
-              <div key={`r1-${idx}`} className="flex-shrink-0 flex items-center gap-3 px-6 py-4 bg-neutral-50 border border-neutral-200/80 rounded-2xl hover:bg-white hover:border-neutral-300 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-default group">
+              <div key={`r1-${idx}`} className="flex-shrink-0 flex items-center gap-3 px-6 py-4 bg-[var(--panel)] border border-[var(--line)] hover:bg-[var(--ink)] hover:text-[var(--paper)] hover:-translate-y-0.5 transition-all duration-200 cursor-default group">
                 <div style={{ color: tech.color }} className="group-hover:scale-110 transition-transform duration-200">{tech.svg}</div>
-                <span className="font-bold text-neutral-700 text-sm whitespace-nowrap">{name}</span>
+                <span className="font-bold text-sm whitespace-nowrap">{name}</span>
               </div>
             );
           })}
@@ -91,17 +91,17 @@ export function SkillsMarquee() {
           {row2.map((name, idx) => {
             const tech = techIcons[name];
             return (
-              <div key={`r2-${idx}`} className="flex-shrink-0 flex items-center gap-3 px-6 py-4 bg-neutral-50 border border-neutral-200/80 rounded-2xl hover:bg-white hover:border-neutral-300 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-default group">
+              <div key={`r2-${idx}`} className="flex-shrink-0 flex items-center gap-3 px-6 py-4 bg-[var(--panel)] border border-[var(--line)] hover:bg-[var(--ink)] hover:text-[var(--paper)] hover:-translate-y-0.5 transition-all duration-200 cursor-default group">
                 <div style={{ color: tech.color }} className="group-hover:scale-110 transition-transform duration-200">{tech.svg}</div>
-                <span className="font-bold text-neutral-700 text-sm whitespace-nowrap">{name}</span>
+                <span className="font-bold text-sm whitespace-nowrap">{name}</span>
               </div>
             );
           })}
         </div>
       </div>
 
-      <div className="absolute top-0 left-0 w-24 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-      <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 left-0 w-24 h-full bg-gradient-to-r from-[var(--paper)] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-[var(--paper)] to-transparent z-10 pointer-events-none" />
     </section>
   );
 }

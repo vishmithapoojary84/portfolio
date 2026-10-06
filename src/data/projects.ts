@@ -12,11 +12,11 @@ export const projects = [
       'Secured public AI web widgets to prevent unauthorized billing charges',
     ],
     tags: ['Node.js', 'PostgreSQL', 'WebSockets', 'LLMs (OpenAI, Gemini)', 'Drizzle ORM', 'Security'],
-    demoLink: '',
+      demoLink: 'https://voice.trikon.tech/walkthrough',
     repoLink: '',
     emoji: '🎙️',
     gradient: ['#14b8a6', '#0ea5e9'],
-    image: '/project-trikon.png',
+    image: '/public-trikon.jpeg',
   },
 
   {

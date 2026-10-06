@@ -24,7 +24,7 @@ export function ProgressIndicator() {
     <div className="w-full fixed top-0 left-0 z-50 h-1 bg-transparent pointer-events-none">
       <div 
         ref={progressRef} 
-        className="h-full bg-white origin-left transform-gpu"
+        className="h-full bg-[var(--accent)] origin-left transform-gpu"
         style={{ transform: "scaleX(0)", willChange: "transform" }}
       ></div>
     </div>

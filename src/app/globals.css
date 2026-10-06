@@ -1,8 +1,37 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #f7f3ea;
+  --ink: #11110f;
+  --panel: #fffdf6;
+  --muted: #777166;
+  --muted-strong: #3f3a34;
+  --line: rgba(17, 17, 15, 0.2);
+  --shadow: rgba(17, 17, 15, 0.18);
+  --shadow-strong: rgba(17, 17, 15, 0.92);
+  --accent: #b9ff38;
+  --accent-alt: #38d8ff;
+  --accent-warm: #ff5c35;
+  --accent-strong: #0f7f91;
+  --background: var(--paper);
+  --foreground: var(--ink);
+}
+
+:root[data-theme="dark"] {
+  --paper: #10100e;
+  --ink: #f5efe3;
+  --panel: #191815;
+  --muted: #aaa294;
+  --muted-strong: #ddd4c4;
+  --line: rgba(245, 239, 227, 0.18);
+  --shadow: rgba(245, 239, 227, 0.14);
+  --shadow-strong: rgba(245, 239, 227, 0.88);
+  --accent: #b9ff38;
+  --accent-alt: #42d7ff;
+  --accent-warm: #ff7048;
+  --accent-strong: #b9ff38;
+  --background: var(--paper);
+  --foreground: var(--ink);
 }
 
 @theme inline {
@@ -18,10 +47,30 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), sans-serif;
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 a, button, [role="button"] {
   cursor: pointer;
+}
+
+button,
+a {
+  outline-color: var(--accent);
+  outline-offset: 4px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .typed-cursor:not(:last-child) {
